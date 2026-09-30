@@ -1,4 +1,7 @@
 # 🩷 Pixel Lace Studio
+![HTML5 Canvas](https://img.shields.io/badge/HTML5-canvas-e34f26)
+![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)
+![Live Demo](https://img.shields.io/badge/live-demo-ff69b4)
 
 A free, browser-based studio for designing ornate **pixel lace** — the delicate, symmetric dot-and-grid patterns you see all over Pinterest. Place a few pixels and let symmetry bloom them into doilies, florals, and filet-crochet-style charts. No sign-up, no install, nothing leaves your device.
 
