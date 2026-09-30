@@ -3,7 +3,6 @@
 A free, browser-based studio for designing ornate **pixel lace** — the delicate, symmetric dot-and-grid patterns you see all over Pinterest. Place a few pixels and let symmetry bloom them into doilies, florals, and filet-crochet-style charts. No sign-up, no install, nothing leaves your device.
 
 **▶ Live: https://mofangei.github.io/pixel-lace/**
-*(swap in your actual repo path if it's different)*
 
 ---
 
