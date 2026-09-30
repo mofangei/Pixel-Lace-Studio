@@ -6,26 +6,33 @@
 <title>Pixel Lace Studio</title>
 <style>
   :root{
-    --paper:#FBF6EF;
-    --paper-2:#F4EADF;
-    --ink:#2A2320;
-    --ink-soft:#6E5F55;
-    --line:#E3D4C4;
+    --paper:#F1F8FD;
+    --paper-2:#E4F1FA;
+    --ink:#20303A;
+    --ink-soft:#5A6975;
+    --line:#CBE1EF;
     --rose:#C97B8E;
     --rose-deep:#A44C63;
     --gold:#C39A5B;
     --sage:#93A187;
-    --shadow:rgba(90,60,40,.16);
-    --panel:#FFFDFA;
+    --shadow:rgba(40,70,95,.16);
+    --panel:#E7F3FB;
+  }
+  body.dark{
+    --paper:#1b1920;--paper-2:#26222c;--ink:#ECE4DB;--ink-soft:#A79C93;
+    --line:#38333f;--rose:#D98BA0;--rose-deep:#C97B8E;--gold:#D0AC6A;
+    --sage:#93A187;--shadow:rgba(0,0,0,.55);--panel:#231f29;
+  }
+  body.dark{
+    background:#000;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html,body{height:100%;}
+  html{background:#C4E4F4;}
+  html.dark{background:#000;}
   body{
     font-family:"Avenir Next","Segoe UI",Helvetica,Arial,sans-serif;
-    background:
-      radial-gradient(1200px 700px at 78% -10%, #FCEFE4 0%, transparent 55%),
-      radial-gradient(900px 600px at -5% 110%, #F3E7F0 0%, transparent 50%),
-      var(--paper);
+    background:#C4E4F4;
     color:var(--ink);
     min-height:100%;
     padding:26px 22px 70px;
@@ -38,6 +45,14 @@
     margin-bottom:22px;
     position:relative;
   }
+  .theme-toggle{
+    position:absolute;top:0;right:0;font-family:inherit;cursor:pointer;
+    border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    border-radius:50%;width:40px;height:40px;font-size:17px;line-height:1;transition:.15s;
+    display:flex;align-items:center;justify-content:center;padding:0;
+  }
+  .theme-toggle:hover{border-color:var(--rose);}
+  @media (max-width:560px){ .theme-toggle{position:static;margin-bottom:12px;} }
   header.masthead .kicker{
     font-size:11px;letter-spacing:.42em;text-transform:uppercase;
     color:var(--rose-deep);font-weight:600;margin-bottom:6px;
@@ -60,13 +75,15 @@
   }
 
   .studio{
-    display:grid;
-    grid-template-columns:262px minmax(0,1fr);
-    gap:20px;
-    align-items:start;
+    display:flex;
+    flex-direction:column;
+    gap:22px;
   }
-  @media (max-width:860px){
-    .studio{grid-template-columns:1fr;}
+  .stage-wrap{order:-1;align-self:center;width:100%;max-width:860px;}
+  .controls{column-width:270px;column-gap:16px;}
+  .controls .panel{break-inside:avoid;margin:0 0 16px;}
+  @media (max-width:560px){
+    .controls{column-width:auto;columns:1;}
   }
 
   .panel{
@@ -95,8 +112,8 @@
   }
   button.tool:hover,.seg button:hover{border-color:var(--rose);color:var(--rose-deep);}
   button.tool.active,.seg button.active{
-    background:var(--rose-deep);border-color:var(--rose-deep);color:#fff;
-    box-shadow:0 6px 14px -6px var(--rose-deep);
+    background:#F2C43D;border-color:#E0AE1F;color:#2A2320;
+    box-shadow:0 6px 14px -6px rgba(224,174,31,.6);
   }
   .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
   .grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
@@ -106,6 +123,10 @@
   .sym-btn{flex-direction:column;gap:5px;padding:10px 6px;}
   .sym-btn svg{width:26px;height:26px;}
   .sym-btn span{font-size:10.5px;letter-spacing:.02em;}
+  .symgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;}
+  .symgrid .sym-btn{min-width:0;padding:8px 2px;gap:4px;}
+  .symgrid .sym-btn svg{width:21px;height:21px;}
+  .symgrid .sym-btn span{font-size:9px;letter-spacing:0;line-height:1.1;white-space:nowrap;}
 
   label.ctl{font-size:12px;color:var(--ink-soft);display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;font-weight:600;}
   input[type=range]{width:100%;accent-color:var(--rose-deep);}
@@ -117,6 +138,10 @@
   .swatch[data-empty]{background:
       linear-gradient(45deg,#eee 25%,transparent 25%,transparent 75%,#eee 75%) 0 0/10px 10px,
       linear-gradient(45deg,#eee 25%,#fff 25%,#fff 75%,#eee 75%) 5px 5px/10px 10px;}
+  .swatch.custom{overflow:hidden;background:conic-gradient(from 0deg,#ff6b6b,#ffd93d,#6bcB77,#4d96ff,#9b6bff,#ff6bd6,#ff6b6b);}
+  .swatch.custom input[type=color]{position:absolute;inset:0;width:100%;height:100%;opacity:0;border:none;padding:0;cursor:pointer;}
+  .swatch.custom::after{content:"+";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;text-shadow:0 1px 3px rgba(0,0,0,.5);pointer-events:none;}
+  .swatch.custom.chosen::after{display:none;}
 
   .colorpick{display:flex;align-items:center;gap:10px;margin-top:4px;}
   .colorpick input[type=color]{width:40px;height:34px;border:1px solid var(--line);border-radius:9px;background:none;cursor:pointer;padding:2px;}
@@ -124,15 +149,15 @@
 
   /* Canvas stage */
   .stage-wrap{
-    background:var(--panel);border:1px solid var(--line);border-radius:16px;
-    padding:18px;box-shadow:0 14px 40px -22px var(--shadow);
+    background:transparent;border:none;border-radius:0;
+    padding:0;box-shadow:none;
     display:flex;flex-direction:column;align-items:center;gap:14px;
   }
   .stage-frame{
-    position:relative;width:100%;max-width:620px;aspect-ratio:1;
+    position:relative;width:100%;max-width:min(800px,72vh);aspect-ratio:1;
     border-radius:12px;overflow:hidden;
     box-shadow:inset 0 0 0 1px rgba(0,0,0,.05), 0 8px 24px -16px var(--shadow);
-    background:#fff;
+    background:var(--panel);
     touch-action:none;
   }
   canvas#board{width:100%;height:100%;display:block;cursor:crosshair;image-rendering:pixelated;position:relative;z-index:1;}
@@ -148,6 +173,8 @@
   .stage-actions button:hover{border-color:var(--rose);color:var(--rose-deep);}
   .stage-actions button.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
   .stage-actions button.primary:hover{background:var(--rose-deep);border-color:var(--rose-deep);color:#fff;}
+  body.dark .stage-actions button.primary{color:#17151b;}
+  body.dark .stage-actions button.primary:hover{color:#fff;}
   .stage-actions button:disabled{opacity:.4;cursor:not-allowed;}
 
   .hint{font-size:11.5px;color:var(--ink-soft);text-align:center;line-height:1.5;}
@@ -155,6 +182,9 @@
 
   .foot{text-align:center;margin-top:30px;color:var(--ink-soft);font-size:12px;}
   .foot em{font-style:italic;font-family:"Hoefler Text",Georgia,serif;}
+  .foot.credit{letter-spacing:.04em;}
+  .foot.credit a{color:var(--rose-deep);font-weight:600;text-decoration:none;border-bottom:1px solid transparent;transition:.15s;}
+  .foot.credit a:hover{border-bottom-color:var(--rose-deep);}
 
   .toast{
     position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(20px);
@@ -180,11 +210,15 @@
   .modal-actions{display:flex;gap:8px;justify-content:flex-end;}
   .modal-actions button{font-family:inherit;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 16px;font-size:13px;font-weight:600;}
   .modal-actions button.ghost{background:var(--paper);color:var(--ink);border-color:var(--line);}
+  body.dark .modal-actions button{color:#17151b;}
+  body.dark .modal-actions button.ghost{color:var(--ink);}
+  #pixelTitle{display:block;margin:0 auto;image-rendering:pixelated;}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="masthead">
+    <button id="themeToggle" class="theme-toggle" title="Toggle dark / light" aria-label="Toggle theme">🌙</button>
     <div class="kicker">Make it by hand</div>
     <h1>Pixel Lace Studio</h1>
     <p class="sub">Place pixels on a grid and let symmetry do the ornate work. Mirror, quarter, or bloom your marks into eight-fold radial lace, then export a crisp PNG.</p>
@@ -193,7 +227,7 @@
 
   <div class="studio">
     <!-- CONTROLS -->
-    <div>
+    <div class="controls">
       <div class="panel">
         <h2>Tools</h2>
         <div class="grid4">
@@ -211,7 +245,15 @@
         <button class="tool" id="loadRef" style="width:100%;">⤢ Drop or choose an image</button>
         <input type="file" id="refFile" accept="image/*" style="display:none;">
         <div id="refControls" style="display:none;margin-top:12px;">
-          <label class="ctl">Guide opacity <span id="refOpVal">45%</span></label>
+          <button class="tool" id="traceBtn" style="width:100%;background:var(--rose-deep);border-color:var(--rose-deep);color:#fff;">▦ Trace image to grid</button>
+          <div class="seg" id="traceColorSeg" style="grid-template-columns:repeat(2,1fr);margin-top:8px;">
+            <button class="active" data-tc="original">Original colors</button>
+            <button data-tc="palette">Match palette</button>
+          </div>
+          <label class="ctl" style="margin-top:8px;">Background removal <span id="traceTolVal">off</span></label>
+          <input type="range" id="traceTol" min="0" max="60" value="0">
+          <p style="font-size:10.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4;">Off = fills every pixel. Raise it only to drop the background. Use Fit → Fill to cover the whole grid.</p>
+          <label class="ctl" style="margin-top:12px;">Guide opacity <span id="refOpVal">45%</span></label>
           <input type="range" id="refOpacity" min="10" max="100" value="45">
           <label class="ctl" style="margin-top:12px;">Fit</label>
           <div class="seg" id="refFitSeg" style="grid-template-columns:repeat(3,1fr);">
@@ -235,28 +277,66 @@
 
       <div class="panel">
         <h2>Symmetry</h2>
-        <div class="grid4">
+        <div class="symgrid">
           <button class="tool sym-btn" data-sym="none" title="No symmetry">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="9" r="2"/><circle cx="15" cy="15" r="2"/></svg>
             <span>Free</span>
           </button>
           <button class="tool sym-btn" data-sym="x" title="Mirror left ↔ right">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="2 2"/><circle cx="7" cy="10" r="2"/><circle cx="17" cy="10" r="2"/></svg>
-            <span>Mirror</span>
+            <span>Mir&nbsp;↔</span>
           </button>
           <button class="tool sym-btn active" data-sym="quad" title="4-way quarter mirror">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="2 2"/><line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="2 2"/><circle cx="7" cy="7" r="1.7"/><circle cx="17" cy="7" r="1.7"/><circle cx="7" cy="17" r="1.7"/><circle cx="17" cy="17" r="1.7"/></svg>
-            <span>Quarter</span>
+            <span>Quad</span>
           </button>
           <button class="tool sym-btn" data-sym="oct" title="8-way radial lace">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><line x1="12" y1="2" x2="12" y2="22" stroke-dasharray="2 2"/><line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="2 2"/><line x1="4" y1="4" x2="20" y2="20" stroke-dasharray="2 2"/><line x1="20" y1="4" x2="4" y2="20" stroke-dasharray="2 2"/><circle cx="12" cy="6" r="1.4"/><circle cx="18" cy="12" r="1.4"/></svg>
             <span>Radial</span>
+          </button>
+          <button class="tool sym-btn" data-sym="y" title="Mirror top ↕ bottom">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="2" y1="12" x2="22" y2="12" stroke-dasharray="2 2"/><circle cx="10" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+            <span>Mir&nbsp;↕</span>
+          </button>
+          <button class="tool sym-btn" data-sym="diag" title="Mirror across the ⟍ diagonal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="3" x2="21" y2="21" stroke-dasharray="2 2"/><circle cx="15" cy="8" r="2"/><circle cx="8" cy="15" r="2"/></svg>
+            <span>Diag&nbsp;⟍</span>
+          </button>
+          <button class="tool sym-btn" data-sym="diag2" title="Mirror across the ⟋ diagonal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><line x1="3" y1="21" x2="21" y2="3" stroke-dasharray="2 2"/><circle cx="8" cy="9" r="2"/><circle cx="15" cy="16" r="2"/></svg>
+            <span>Diag&nbsp;⟋</span>
+          </button>
+          <button class="tool sym-btn" data-sym="diagx" title="Mirror across both diagonals">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="3" y1="3" x2="21" y2="21" stroke-dasharray="2 2"/><line x1="21" y1="3" x2="3" y2="21" stroke-dasharray="2 2"/><circle cx="12" cy="6" r="1.6"/></svg>
+            <span>X&nbsp;fold</span>
+          </button>
+          <button class="tool sym-btn" data-sym="rot2" title="180° rotational (point) symmetry">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 5a7 7 0 0 1 10 3" stroke-dasharray="2 2"/><circle cx="8" cy="8" r="2"/><circle cx="16" cy="16" r="2"/></svg>
+            <span>Turn&nbsp;2</span>
+          </button>
+          <button class="tool sym-btn" data-sym="rot4" title="4-fold rotational pinwheel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="6" r="1.6"/><circle cx="18" cy="12" r="1.6"/><circle cx="12" cy="18" r="1.6"/><circle cx="6" cy="12" r="1.6"/><path d="M12 12l4-2" stroke-dasharray="2 2"/></svg>
+            <span>Wheel</span>
+          </button>
+          <button class="tool sym-btn" data-sym="tile4" title="Repeat as a 2×2 tile (no mirror)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="8" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/><rect x="13" y="13" width="8" height="8" rx="1"/></svg>
+            <span>Tile&nbsp;4</span>
+          </button>
+          <button class="tool sym-btn" data-sym="tile9" title="Repeat as a 3×3 tile (no mirror)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="2" y="2" width="5.5" height="5.5"/><rect x="9.25" y="2" width="5.5" height="5.5"/><rect x="16.5" y="2" width="5.5" height="5.5"/><rect x="2" y="9.25" width="5.5" height="5.5"/><rect x="9.25" y="9.25" width="5.5" height="5.5"/><rect x="16.5" y="9.25" width="5.5" height="5.5"/><rect x="2" y="16.5" width="5.5" height="5.5"/><rect x="9.25" y="16.5" width="5.5" height="5.5"/><rect x="16.5" y="16.5" width="5.5" height="5.5"/></svg>
+            <span>Tile&nbsp;9</span>
           </button>
         </div>
       </div>
 
       <div class="panel">
         <h2>Palette</h2>
+        <div class="row" id="themeChips" style="margin-bottom:10px;">
+          <button class="tool" data-theme="coquette" style="flex:1;font-size:11px;padding:7px 4px;">Coquette</button>
+          <button class="tool" data-theme="gold" style="flex:1;font-size:11px;padding:7px 4px;">Gold</button>
+          <button class="tool" data-theme="pastel" style="flex:1;font-size:11px;padding:7px 4px;">Pastel</button>
+          <button class="tool" data-theme="ocean" style="flex:1;font-size:11px;padding:7px 4px;">Ocean</button>
+        </div>
         <div class="swatches" id="swatches"></div>
         <div class="colorpick">
           <input type="color" id="customColor" value="#a44c63">
@@ -271,12 +351,22 @@
       <div class="panel">
         <h2>Canvas</h2>
         <label class="ctl">Grid size <span id="sizeVal">32 × 32</span></label>
-        <input type="range" id="sizeRange" min="16" max="64" step="8" value="32">
+        <input type="range" id="sizeRange" min="16" max="128" step="16" value="32">
+        <p style="font-size:10.5px;color:var(--ink-soft);margin-top:4px;line-height:1.4;">Higher = more detail (great before tracing an image).</p>
         <label class="ctl" style="margin-top:14px;">Brush size <span id="brushVal">1 px</span></label>
         <div class="seg" id="brushSeg" style="grid-template-columns:repeat(3,1fr);">
           <button class="active" data-brush="1">1×</button>
           <button data-brush="2">2×</button>
           <button data-brush="3">3×</button>
+          <button data-brush="4">4×</button>
+          <button data-brush="5">5×</button>
+          <button data-brush="6">6×</button>
+        </div>
+        <label class="ctl" style="margin-top:14px;">Pixel shape</label>
+        <div class="seg" id="shapeSeg" style="grid-template-columns:repeat(3,1fr);">
+          <button class="active" data-shape="square">◼ Square</button>
+          <button data-shape="bead">● Bead</button>
+          <button data-shape="stitch">✕ Stitch</button>
         </div>
         <div class="row" style="margin-top:12px;">
           <button class="tool" id="toggleGrid" style="flex:1;">Grid: On</button>
@@ -300,6 +390,7 @@
           <button class="tool" data-seed="sunflower">❊ Sunflower</button>
           <button class="tool" data-seed="lily">✤ Lily</button>
         </div>
+        <button class="tool" id="surprise" style="width:100%;margin-top:8px;">🎲 Surprise me</button>
       </div>
 
       <div class="panel">
@@ -316,7 +407,7 @@
           <button class="tool" id="importSaves" style="flex:1;">⬆ Import</button>
         </div>
         <input type="file" id="importFile" accept="application/json,.json" style="display:none;">
-        <button class="tool" id="getCode" style="width:100%;margin-top:8px;">⧉ Get code to host online</button>
+        <button class="tool" id="shareLink" style="width:100%;margin-top:8px;">🔗 Copy shareable link</button>
         <div id="savedList" class="stack" style="margin-top:10px;"></div>
         <p style="font-size:11px;color:var(--ink-soft);margin-top:10px;line-height:1.45;">Saved on this device &amp; auto-restored on reopen. Use Backup to move designs to another device.</p>
       </div>
@@ -361,6 +452,10 @@
   </div>
 
   <p class="foot"><em>Tip:</em> Start with Radial symmetry + a small brush near the center — sparse dots read as the most delicate lace.</p>
+  <p class="foot credit" style="margin-top:6px;">made with <span style="color:var(--rose-deep);">♡</span> by <a href="https://github.com/mofangei" target="_blank" rel="noopener">@mofangei</a> on GitHub</p>
+  <p style="text-align:center;margin-top:16px;">
+    <button id="getCode" style="font-family:inherit;cursor:pointer;background:none;border:none;color:var(--ink-soft);font-size:11px;text-decoration:underline;opacity:.55;">⧉ get code to host online</button>
+  </p>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -404,6 +499,7 @@
   let recording = false;      // Timelapse Recorder — off by default
   let frames = [];            // captured grid snapshots for the timelapse
   let refActive = false;      // a reference image is showing behind the grid
+  let renderStyle = 'square'; // square | bead | stitch
 
   const PALETTE = [
     null,        // erase / transparent
@@ -422,6 +518,14 @@
     const add=(a,b)=>{ if(a>=0&&b>=0&&a<N&&b<N) set.add(a+','+b); };
     add(x,y);
     if(sym==='x'){ add(m-x,y); }
+    else if(sym==='y'){ add(x,m-y); }
+    else if(sym==='diag'){ add(y,x); }
+    else if(sym==='diag2'){ add(m-y,m-x); }
+    else if(sym==='diagx'){ add(y,x); add(m-y,m-x); add(m-x,m-y); }
+    else if(sym==='rot2'){ add(m-x,m-y); }
+    else if(sym==='rot4'){ add(m-y,x); add(m-x,m-y); add(y,m-x); }
+    else if(sym==='tile4'){ const o=[0,(N/2)|0]; o.forEach(ox=>o.forEach(oy=>add((x+ox)%N,(y+oy)%N))); }
+    else if(sym==='tile9'){ const t=N/3, o=[0,Math.round(t),Math.round(2*t)]; o.forEach(ox=>o.forEach(oy=>add((x+ox)%N,(y+oy)%N))); }
     else if(sym==='quad'){ add(m-x,y); add(x,m-y); add(m-x,m-y); }
     else if(sym==='oct'){
       const base=[[x,y],[m-x,y],[x,m-y],[m-x,m-y]];
@@ -443,13 +547,29 @@
     render();
   }
 
+  // draw a single cell in the current pixel-shape style
+  function drawCell(c2, px, py, sz, colr, style){
+    c2.fillStyle=colr; c2.strokeStyle=colr;
+    if(style==='bead'){
+      c2.beginPath(); c2.arc(px+sz/2, py+sz/2, sz*0.42, 0, Math.PI*2); c2.fill();
+    } else if(style==='stitch'){
+      const m=sz*0.16; c2.lineWidth=Math.max(1,sz*0.22); c2.lineCap='round';
+      c2.beginPath();
+      c2.moveTo(px+m,py+m); c2.lineTo(px+sz-m,py+sz-m);
+      c2.moveTo(px+sz-m,py+m); c2.lineTo(px+m,py+sz-m);
+      c2.stroke();
+    } else {
+      c2.fillRect(px,py,sz,sz);
+    }
+  }
+
   function render(){
     if(refActive){ ctx.clearRect(0,0,canvas.width,canvas.height); }
     else { ctx.fillStyle = bg; ctx.fillRect(0,0,canvas.width,canvas.height); }
     for(let y=0;y<N;y++){
       for(let x=0;x<N;x++){
         const c = grid[y][x];
-        if(c){ ctx.fillStyle=c; ctx.fillRect(x*cell,y*cell,cell,cell); }
+        if(c){ drawCell(ctx, x*cell, y*cell, cell, c, renderStyle); }
       }
     }
     if(showGrid && cell>=6){
@@ -651,19 +771,46 @@
 
   // Build swatches
   const swWrap=document.getElementById('swatches');
-  PALETTE.forEach(c=>{
-    const d=document.createElement('div');
-    d.className='swatch';
-    if(c===null){ d.dataset.empty='1'; d.title='Transparent (backdrop)'; d.dataset.color=''; }
-    else { d.style.background=c; d.dataset.color=c; d.title=c; }
-    d.addEventListener('click',()=>{
-      if(c===null){ tool='erase'; setActiveTool('erase'); return; }
-      setColor(c);
-      if(tool==='erase'){ tool='draw'; setActiveTool('draw'); }
+  const THEMES={
+    coquette:['#FFFFFF','#F6EFE3','#F4D7DF','#E8A9BC','#C97B8E','#A44C63','#7A2E44','#C39A5B'],
+    gold:['#1A1616','#2E2A33','#5A4B2E','#8A6D3B','#C39A5B','#E8CE90','#F3E7C4','#FFFFFF'],
+    pastel:['#FBE7EF','#FADCE6','#F6D7C4','#FBF3D6','#DDF0D8','#D7EFEF','#DCE4FB','#EADCFB'],
+    ocean:['#EAF7FD','#BFE8DE','#8FD0C6','#5FA8C9','#2E7DA0','#1B4A63','#0E2E42','#FFFFFF']
+  };
+  let activeColors = PALETTE.slice(1);
+  function renderPalette(colors){
+    activeColors = colors.slice();
+    swWrap.innerHTML='';
+    const e=document.createElement('div');
+    e.className='swatch'; e.dataset.empty='1'; e.title='Transparent (backdrop)'; e.dataset.color='';
+    e.addEventListener('click',()=>setActiveTool('erase'));
+    swWrap.appendChild(e);
+    colors.forEach(c=>{
+      const d=document.createElement('div');
+      d.className='swatch'; d.style.background=c; d.dataset.color=c; d.title=c;
+      d.addEventListener('click',()=>{ setColor(c); if(tool==='erase') setActiveTool('draw'); });
+      swWrap.appendChild(d);
     });
-    swWrap.appendChild(d);
+    const customSw=document.createElement('label');
+    customSw.className='swatch custom'; customSw.title='Custom color — click to pick';
+    const ci=document.createElement('input'); ci.type='color'; ci.value=(color&&color[0]==='#')?color:'#a44c63';
+    customSw.appendChild(ci); customSw.dataset.color=ci.value;
+    ci.addEventListener('input',()=>{
+      customSw.dataset.color=ci.value; customSw.classList.add('chosen'); customSw.style.background=ci.value;
+      setColor(ci.value); if(tool==='erase') setActiveTool('draw');
+    });
+    swWrap.appendChild(customSw);
+    setColor(color);
+  }
+  renderPalette(PALETTE.slice(1));
+  document.querySelectorAll('#themeChips button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const set=THEMES[b.dataset.theme]; if(!set) return;
+      color=set[Math.min(4,set.length-1)];
+      renderPalette(set);
+      toast(b.textContent+' palette');
+    });
   });
-  setColor(color);
 
   document.getElementById('customColor').addEventListener('input',e=>{
     setColor(e.target.value);
@@ -722,6 +869,14 @@
       brushSize=parseInt(b.dataset.brush,10);
       document.getElementById('brushVal').textContent=brushSize+' px';
       document.querySelectorAll('#brushSeg button').forEach(x=>x.classList.toggle('active',x===b));
+    });
+  });
+  document.querySelectorAll('#shapeSeg button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      renderStyle=b.dataset.shape;
+      document.querySelectorAll('#shapeSeg button').forEach(x=>x.classList.toggle('active',x===b));
+      try{ localStorage.setItem('pixelLaceShape',renderStyle); }catch(e){}
+      render();
     });
   });
   document.getElementById('clear').addEventListener('click',()=>{
@@ -877,6 +1032,36 @@
     });
   });
 
+  // ---- Random lace generator ----
+  function randomLace(){
+    pushUndo();
+    grid=makeGrid(N);
+    const savedSym=sym;
+    sym = Math.random()<0.7 ? 'oct' : 'quad';
+    const h=Math.floor(N/2);
+    const pal = activeColors.length ? activeColors : PALETTE.slice(1);
+    const c1=pal[Math.floor(Math.random()*pal.length)];
+    const c2=Math.random()<0.55 ? pal[Math.floor(Math.random()*pal.length)] : c1;
+    const density=0.22+Math.random()*0.22;
+    // paint a wedge (x>=y) so 8-fold symmetry fills the disk evenly
+    for(let y=0;y<h;y++)for(let x=y;x<h;x++){
+      if(Math.random()<density){
+        const col=Math.random()<0.5?c1:c2;
+        symPoints(x,y).forEach(([a,b])=>{ grid[b][a]=col; });
+      }
+    }
+    // a concentric ring for structure, sometimes
+    if(Math.random()<0.6){
+      const R=Math.floor(h*(0.45+Math.random()*0.4)), c=h-1;
+      for(let a=0;a<=90;a+=8){ const rad=a*Math.PI/180, rx=c-Math.round(R*Math.cos(rad)), ry=c-Math.round(R*Math.sin(rad));
+        if(rx>=0&&ry>=0&&rx<N&&ry<N) symPoints(rx,ry).forEach(([p,q])=>{ grid[q][p]=c1; }); }
+    }
+    sym=savedSym;
+    render(); recordFrame();
+    toast('Fresh lace — edit or roll again');
+  }
+  document.getElementById('surprise').addEventListener('click',randomLace);
+
   // ---- Export ----
   document.getElementById('export').addEventListener('click',()=>{
     const scale=24; // upscale factor for a chunky, crisp export
@@ -889,7 +1074,7 @@
     }
     for(let y=0;y<N;y++)for(let x=0;x<N;x++){
       const c=grid[y][x];
-      if(c){ o.fillStyle=c; o.fillRect(x*scale,y*scale,scale,scale); }
+      if(c){ drawCell(o, x*scale, y*scale, scale, c, renderStyle); }
     }
     off.toBlob(b=>{ showExport({kind:'image', blob:b, filename:'pixel-lace-'+N+'x'+N+'.png', title:'Your PNG'}); }, 'image/png');
   });
@@ -1020,6 +1205,53 @@
   document.getElementById('loadRef').addEventListener('click',()=>document.getElementById('refFile').click());
   document.getElementById('refFile').addEventListener('change',e=>{ if(e.target.files[0]) setReference(e.target.files[0]); e.target.value=''; });
   document.getElementById('refOpacity').addEventListener('input',applyRefOpacity);
+  // ---- Auto-trace the reference image into the grid ----
+  function hexToRgb(hex){ const n=parseInt(hex.slice(1),16); return [(n>>16)&255,(n>>8)&255,n&255]; }
+  function rgbToHex(r,g,b){ return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join(''); }
+  let traceColorMode='original';
+  function traceToGrid(){
+    if(!refImg.src || !refImg.complete || !refImg.naturalWidth){ toast('Load a reference image first'); return; }
+    pushUndo();
+    const off=document.createElement('canvas'); off.width=N; off.height=N;
+    const o=off.getContext('2d');
+    const iw=refImg.naturalWidth, ih=refImg.naturalHeight;
+    let dw,dh;
+    if(refFit==='fill'){ dw=N; dh=N; }
+    else { const s = refFit==='cover' ? Math.max(N/iw,N/ih) : Math.min(N/iw,N/ih); dw=iw*s; dh=ih*s; }
+    o.clearRect(0,0,N,N);
+    o.drawImage(refImg,(N-dw)/2,(N-dh)/2,dw,dh);
+    const data=o.getImageData(0,0,N,N).data;
+    const at=(ix,iy)=>{ const i=(iy*N+ix)*4; return [data[i],data[i+1],data[i+2],data[i+3]]; };
+    // estimate the background from the four corners
+    const corners=[at(0,0),at(N-1,0),at(0,N-1),at(N-1,N-1)].filter(c=>c[3]>40);
+    let bg=[255,255,255];
+    if(corners.length){ bg=[0,1,2].map(j=>Math.round(corners.reduce((s,c)=>s+c[j],0)/corners.length)); }
+    const thr=parseInt(document.getElementById('traceTol').value,10)/100*441; // rgb distance
+    const keep=traceColorMode==='original';
+    const pal=activeColors.length?activeColors:PALETTE.slice(1);
+    const palRGB=pal.map(hexToRgb);
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+      const [r,g,b,a]=at(x,y);
+      if(a<40){ grid[y][x]=null; continue; }
+      if(Math.hypot(r-bg[0],g-bg[1],b-bg[2])<thr){ grid[y][x]=null; continue; }
+      if(keep){ grid[y][x]=rgbToHex(r,g,b); }
+      else {
+        let best=0,bd=Infinity;
+        for(let k=0;k<palRGB.length;k++){ const p=palRGB[k]; const dd=(p[0]-r)**2+(p[1]-g)**2+(p[2]-b)**2; if(dd<bd){bd=dd;best=k;} }
+        grid[y][x]=pal[best];
+      }
+    }
+    render(); recordFrame();
+    toast(N<64 ? 'Traced! Raise Grid size for sharper detail' : 'Traced! Edit or remove the guide');
+  }
+  document.getElementById('traceBtn').addEventListener('click',traceToGrid);
+  document.querySelectorAll('#traceColorSeg button').forEach(b=>{
+    b.addEventListener('click',()=>{ traceColorMode=b.dataset.tc; document.querySelectorAll('#traceColorSeg button').forEach(x=>x.classList.toggle('active',x===b)); });
+  });
+  document.getElementById('traceTol').addEventListener('input',e=>{
+    const v=+e.target.value;
+    document.getElementById('traceTolVal').textContent = v===0?'off':v<=12?'light':v<=32?'medium':'aggressive';
+  });
   ['refScale','refX','refY'].forEach(id=>document.getElementById(id).addEventListener('input',applyRefTransform));
   document.querySelectorAll('#refFitSeg button').forEach(b=>{
     b.addEventListener('click',()=>{
@@ -1107,6 +1339,45 @@
       text:src, hint:'Tap <b>Copy</b>, then in GitHub create a new file named <b>index.html</b> and paste this in.'});
   });
 
+  // ---- Shareable design link (design encoded in the URL) ----
+  function encodePayload(){
+    const colors=[], idx=new Map(), flat=[];
+    for(let y=0;y<N;y++)for(let x=0;x<N;x++){
+      const c=grid[y][x]; let v;
+      if(c===null) v=0; else { if(!idx.has(c)){ idx.set(c,colors.length); colors.push(c); } v=idx.get(c)+1; }
+      flat.push(v);
+    }
+    const rle=[]; let prev=flat[0], cnt=0;
+    for(const v of flat){ if(v===prev) cnt++; else { rle.push([prev,cnt]); prev=v; cnt=1; } }
+    rle.push([prev,cnt]);
+    return {v:1, N, bg, colors, rle};
+  }
+  function gridFromPayload(p){
+    const flat=[]; p.rle.forEach(([v,cnt])=>{ for(let i=0;i<cnt;i++) flat.push(v); });
+    const g=[]; let i=0;
+    for(let y=0;y<p.N;y++){ const row=[]; for(let x=0;x<p.N;x++){ const v=flat[i++]|0; row.push(v===0?null:(p.colors[v-1]||null)); } g.push(row); }
+    return g;
+  }
+  function makeShareLink(){
+    try{
+      const enc=btoa(unescape(encodeURIComponent(JSON.stringify(encodePayload()))));
+      const url=location.origin+location.pathname+'#d='+enc;
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).catch(()=>{});
+      showExport({kind:'text', blob:new Blob([url],{type:'text/plain'}), filename:'pixel-lace-link.txt', title:'Shareable link',
+        text:url, hint:'Link copied! Anyone who opens it sees your exact design, ready to remix. Works best from your live site.'});
+    }catch(e){ toast('Could not build link'); }
+  }
+  function tryLoadFromHash(){
+    const m=location.hash.match(/[#&]d=([^&]+)/);
+    if(!m) return false;
+    try{
+      const p=JSON.parse(decodeURIComponent(escape(atob(m[1]))));
+      if(p && p.N && p.rle && p.colors){ applyState({N:p.N, bg:p.bg, grid:gridFromPayload(p)}); return true; }
+    }catch(e){}
+    return false;
+  }
+  document.getElementById('shareLink').addEventListener('click',makeShareLink);
+
   // ---- Toast ----
   let toastTimer;
   function toast(msg){
@@ -1189,9 +1460,87 @@
     r.readAsText(f);
   });
 
+  // ---- Dark / light theme ----
+  function setTheme(dark){
+    document.body.classList.toggle('dark', dark);
+    document.documentElement.classList.toggle('dark', dark);
+    document.getElementById('themeToggle').textContent = dark ? '☀︎' : '🌙';
+    try{ localStorage.setItem('pixelLaceTheme', dark?'dark':'light'); }catch(e){}
+    drawTitle();
+  }
+  document.getElementById('themeToggle').addEventListener('click',()=>setTheme(!document.body.classList.contains('dark')));
+  try{ if(localStorage.getItem('pixelLaceTheme')==='dark') setTheme(true); }catch(e){}
+  try{
+    const sh=localStorage.getItem('pixelLaceShape');
+    if(sh && sh!=='square'){
+      renderStyle=sh;
+      document.querySelectorAll('#shapeSeg button').forEach(x=>x.classList.toggle('active',x.dataset.shape===sh));
+    }
+  }catch(e){}
+
   // ---- Init ----
   window.addEventListener('resize',resize);
+  window.addEventListener('resize',drawTitle);
+
+  // ---- Hand-drawn pixel-art title ----
+  const TITLE_FONT={
+    'P':['11110','10001','10001','11110','10000','10000','10000'],
+    'I':['11111','00100','00100','00100','00100','00100','11111'],
+    'X':['10001','10001','01010','00100','01010','10001','10001'],
+    'E':['11111','10000','10000','11110','10000','10000','11111'],
+    'L':['10000','10000','10000','10000','10000','10000','11111'],
+    'A':['01110','10001','10001','11111','10001','10001','10001'],
+    'C':['01111','10000','10000','10000','10000','10000','01111'],
+    'S':['01111','10000','10000','01110','00001','00001','11110'],
+    'T':['11111','00100','00100','00100','00100','00100','00100'],
+    'U':['10001','10001','10001','10001','10001','10001','01110'],
+    'D':['11110','10001','10001','10001','10001','10001','11110'],
+    'O':['01110','10001','10001','10001','10001','10001','01110'],
+    ' ':['00000','00000','00000','00000','00000','00000','00000']
+  };
+  function tHash(a,b,c,d){ let x=(a*73856093)^(b*19349663)^(c*83492791)^(d*2654435761); x=(x^(x>>>13))>>>0; return x; }
+  function drawTitle(){
+    const cv=document.getElementById('pixelTitle'); if(!cv) return;
+    const c2=cv.getContext('2d');
+    const lines=['PIXEL','LACE','STUDIO'];
+    const gap=3;
+    const cols=Math.max(...lines.map(w=>w.length*6-1));
+    const rowsTotal=lines.length*7+(lines.length-1)*gap;
+    const wrapEl=document.querySelector('.wrap');
+    const avail=Math.min((wrapEl?wrapEl.clientWidth:520)-20, 540);
+    let ps=Math.floor(avail/cols); ps=Math.max(5,Math.min(ps,15));
+    const dpr=Math.max(1,window.devicePixelRatio||1);
+    const wCss=cols*ps, hCss=rowsTotal*ps;
+    cv.width=wCss*dpr; cv.height=hCss*dpr;
+    cv.style.width=wCss+'px'; cv.style.height=hCss+'px';
+    c2.setTransform(dpr,0,0,dpr,0,0);
+    c2.clearRect(0,0,wCss,hCss);
+    const dark=document.body.classList.contains('dark');
+    const base=dark?'#F1E9E0':'#22323C';
+    const accents=dark?['#E8A9BC','#D0AC6A','#8FD0C6']:['#C97B8E','#A44C63','#C39A5B'];
+    lines.forEach((word,li)=>{
+      const lineCols=word.length*6-1;
+      const offX=Math.floor((cols-lineCols)/2);
+      const offY=li*(7+gap);
+      for(let ci=0;ci<word.length;ci++){
+        const g=TITLE_FONT[word[ci]]; if(!g) continue;
+        for(let r=0;r<7;r++)for(let col=0;col<5;col++){
+          if(g[r][col]==='1'){
+            const cx=offX+ci*6+col, cy=offY+r;
+            const h=tHash(li,ci,r,col);
+            const jx=((h&15)/15-0.5)*ps*0.55;
+            const jy=(((h>>4)&15)/15-0.5)*ps*0.55;
+            const sz=ps*(0.7+((h>>8&7)/7)*0.42);
+            c2.fillStyle = ((h>>11)&7)===0 ? accents[(h>>12)%accents.length] : base;
+            c2.fillRect(cx*ps+jx, cy*ps+jy, sz, sz);
+          }
+        }
+      }
+    });
+  }
   (function boot(){
+    drawTitle();
+    if(tryLoadFromHash()){ renderSaves(); return; }
     let auto=null;
     try{ auto=JSON.parse(localStorage.getItem('pixelLaceAuto')); }catch(e){}
     if(auto && auto.grid && auto.N){ applyState(auto); }
